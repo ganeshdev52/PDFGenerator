@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:java="http://www.mulesoft.org/schema/mule/java"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans"
+	xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="6f7ad8a7-9df2-41d1-b7c8-e9e5b0665346" >
+		<file:connection workingDir="C:\output" />
+	</file:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c03edb6b-fe53-40ae-b477-35b3176e3659" basePath="/file" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="pdfgenertorFlow" doc:id="2cca1f67-bb48-4a19-9c74-a58c6d2c572b" >
+		<http:listener doc:name="Listener" doc:id="02e8dbe5-542c-4c89-af7c-38358589f670" config-ref="HTTP_Listener_config" path="/file"/>
+		<java:invoke-static doc:name="Invoke static" doc:id="5c341f8e-558e-465c-95a2-36b22fb92bf0" class="com.dextara.pdf.PDFgenerator" method="createPdf(java.lang.String)">
+			<java:args ><![CDATA[#[{
+
+args: payload as String
+
+}]]]></java:args>
+		</java:invoke-static>
+	</flow>
+
+
+
+
+
+</mule>
